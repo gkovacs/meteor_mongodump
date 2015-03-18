@@ -1,0 +1,32 @@
+{
+  "name": "meteor_mongodump",
+  "version": "1.0.0",
+  "description": "mongodump and mongorestore wrapper for meteor repositories",
+  "main": "bin/meteor_mongodump",
+  "dependencies": {
+    "execSync": "^1.0.2",
+    "mongo-uri": "^0.1.2"
+  },
+  "devDependencies": {},
+  "bin": {
+    "meteor_mongodump": "./bin/meteor_mongodump",
+    "meteor_mongorestore": "./bin/meteor_mongorestore"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gkovacs/meteor_mongodump.git"
+  },
+  "keywords": [
+    "mongodump",
+    "meteor"
+  ],
+  "author": "Geza Kovacs (http://github.com/gkovacs)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gkovacs/meteor_mongodump/issues"
+  },
+  "homepage": "https://github.com/gkovacs/meteor_mongodump"
+}
