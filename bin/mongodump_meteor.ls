@@ -2,7 +2,7 @@ require! {
   fs
   'mongo-uri'
 }
-{run, exec} = require 'execSync'
+{exec} = require 'shelljs'
 
 # usage:
 
@@ -10,7 +10,7 @@ datecmd = 'date'
 if fs.existsSync('/usr/local/bin/gdate')
   datecmd = '/usr/local/bin/gdate'
 
-curdate = exec(datecmd + ' --rfc-3339=seconds').stdout.split(' ').join('_').trim()
+curdate = exec(datecmd + ' --rfc-3339=seconds').output.split(' ').join('_').trim()
 
 meteorsite = process.argv[2]
 if not meteorsite?
@@ -22,7 +22,7 @@ meteorsitebase = meteorsite.split('.meteor.com').join('')
 
 dumpdir = [meteorsitebase, curdate].join('_')
 
-mongourl = exec("meteor mongo --url #{meteorsite}").stdout.trim()
+mongourl = exec("meteor mongo --url #{meteorsite}").output.trim()
 
 console.log 'mongourl: ' + mongourl
 
@@ -36,7 +36,7 @@ listcollections = (uri) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  return exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").stdout.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n').split(',')
+  return exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n').split(',')
 
 console.log 'collections:'
 all_collections = listcollections(mongourl)
@@ -53,8 +53,8 @@ mkexport = (uri, collection) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  #run('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  run('mongodump -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + dumpdir + "'")
+  #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
+  exec('mongodump -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + dumpdir + "'")
 
 for collection in all_collections
   mkexport mongourl, collection

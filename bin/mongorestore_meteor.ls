@@ -6,7 +6,7 @@ require! {
 # usage:
 # meteor_mongorestore crowdresearch path_to_some_dump
 
-{run, exec} = require 'execSync'
+{exec} = require 'shelljs'
 
 meteorsite = process.argv[2]
 if not meteorsite?
@@ -40,8 +40,8 @@ mkrestore = (uri, dumppath) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  #run('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  run('mongorestore --drop --host ' + host + ' --db ' + db + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'")
+  #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
+  exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'")
 
 for dbpath in fs.readdirSync(dumpdir)
   console.log dumpdir + '/' + dbpath

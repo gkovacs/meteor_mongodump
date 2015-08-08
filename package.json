@@ -1,11 +1,11 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {
-    "execSync": "^1.0.2",
-    "mongo-uri": "^0.1.2"
+    "mongo-uri": "^0.1.2",
+    "shelljs": "^0.5.1"
   },
   "devDependencies": {},
   "bin": {
