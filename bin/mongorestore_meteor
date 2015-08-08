@@ -23,7 +23,7 @@
     console.log('dumpdir does not exist: ' + dumpdir);
     process.exit();
   }
-  mongourl = exec("meteor mongo --url " + meteorsite).stdout.trim();
+  mongourl = exec("meteor mongo --url " + meteorsite).output.trim();
   console.log('mongourl: ' + mongourl);
   if (mongourl.indexOf('mongodb://') !== 0) {
     console.log('mongourl does not begin with mongodb://');

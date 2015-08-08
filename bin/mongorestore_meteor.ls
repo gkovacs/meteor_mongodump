@@ -26,7 +26,7 @@ if not fs.existsSync(dumpdir)
   console.log 'dumpdir does not exist: ' + dumpdir
   process.exit()
 
-mongourl = exec("meteor mongo --url #{meteorsite}").stdout.trim()
+mongourl = exec("meteor mongo --url #{meteorsite}").output.trim()
 
 console.log 'mongourl: ' + mongourl
 
