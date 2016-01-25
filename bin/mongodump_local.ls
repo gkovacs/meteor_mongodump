@@ -15,6 +15,8 @@ curdate = exec(datecmd + ' --rfc-3339=seconds').output.split(' ').join('_').trim
 mongourl = 'mongodb://localhost:27017'
 meteorsite = meteorsitebase = 'local'
 
+dumpdir = [meteorsitebase, curdate].join('_')
+
 console.log 'mongourl: ' + mongourl
 
 listcollections = (uri) ->
