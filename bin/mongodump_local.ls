@@ -12,7 +12,7 @@ if fs.existsSync('/usr/local/bin/gdate')
 
 curdate = exec(datecmd + ' --rfc-3339=seconds').output.split(' ').join('_').trim()
 
-mongourl = 'mongodb://localhost:27017'
+mongourl = 'mongodb://localhost:27017/default'
 meteorsite = meteorsitebase = 'local'
 
 dumpdir = [meteorsitebase, curdate].join('_')

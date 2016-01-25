@@ -17,7 +17,7 @@ if not fs.existsSync(dumpdir)
   console.log 'dumpdir does not exist: ' + dumpdir
   process.exit()
 
-mongourl = 'mongodb://localhost:27017'
+mongourl = 'mongodb://localhost:27017/default'
 meteorsite = meteorsitebase = 'local'
 
 console.log 'mongourl: ' + mongourl
