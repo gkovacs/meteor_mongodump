@@ -17,7 +17,10 @@
   listcollections = function(uri){
     var login, host;
     login = mongoUri.parse(uri);
-    host = login['hosts'][0] + ':' + login['ports'][0];
+    if (login.database == null) {
+      login.database = 'default';
+    }
+    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
     return exec("mongo " + host + " --eval 'db.getCollectionNames()'").output.trim().split('\n').filter(function(x){
       return x.indexOf('MongoDB shell version') === -1 && x.indexOf('connecting to:') === -1;
     }).join('\n').split(',');
@@ -32,7 +35,10 @@
   mkexport = function(uri, collection){
     var login, host;
     login = mongoUri.parse(uri);
-    host = login['hosts'][0] + ':' + login['ports'][0];
+    if (login.database == null) {
+      login.database = 'default';
+    }
+    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
     return exec('mongodump -h ' + host + " -c " + collection + " -o '" + dumpdir + "'");
   };
   for (i$ = 0, len$ = all_collections.length; i$ < len$; ++i$) {

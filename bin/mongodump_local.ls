@@ -21,7 +21,9 @@ console.log 'mongourl: ' + mongourl
 
 listcollections = (uri) ->
   login = mongo-uri.parse uri
-  host = login['hosts'][0] + ':' + login['ports'][0]
+  if not login.database?
+    login.database = 'default'
+  host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
   return exec("mongo #{host} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n').split(',')
 
 console.log 'collections:'
@@ -35,7 +37,9 @@ if all_collections.length == 0
 mkexport = (uri, collection) ->
   #login = json.loads(check_output("lsc parse_mongo_uri.ls '" + uri + "'", shell=True))
   login = mongo-uri.parse uri
-  host = login['hosts'][0] + ':' + login['ports'][0]
+  if not login.database?
+    login.database = 'default'
+  host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
   exec('mongodump -h ' + host + " -c " + collection + " -o '" + dumpdir + "'")
 

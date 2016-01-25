@@ -20,7 +20,10 @@
   mkrestore = function(uri, dumppath){
     var login, host;
     login = mongoUri.parse(uri);
-    host = login['hosts'][0] + ':' + login['ports'][0];
+    if (login.database == null) {
+      login.database = 'default';
+    }
+    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
     return exec('mongorestore --drop --host ' + host + " '" + dumppath + "'");
   };
   for (i$ = 0, len$ = (ref$ = fs.readdirSync(dumpdir)).length; i$ < len$; ++i$) {

@@ -24,7 +24,9 @@ console.log 'mongourl: ' + mongourl
 
 mkrestore = (uri, dumppath) ->
   login = mongo-uri.parse uri
-  host = login['hosts'][0] + ':' + login['ports'][0]
+  if not login.database?
+    login.database = 'default'
+  host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
   exec('mongorestore --drop --host ' + host + " '" + dumppath + "'")
 
