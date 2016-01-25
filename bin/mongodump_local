@@ -38,8 +38,8 @@
     if (login.database == null) {
       login.database = 'default';
     }
-    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
-    return exec('mongodump -h ' + host + " -c " + collection + " -o '" + dumpdir + "'");
+    host = login['hosts'][0] + ':' + login['ports'][0];
+    return exec('mongodump -h ' + host + (" --db " + login.database + " -c ") + collection + " -o '" + dumpdir + "'");
   };
   for (i$ = 0, len$ = all_collections.length; i$ < len$; ++i$) {
     collection = all_collections[i$];

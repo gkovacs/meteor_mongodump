@@ -39,9 +39,9 @@ mkexport = (uri, collection) ->
   login = mongo-uri.parse uri
   if not login.database?
     login.database = 'default'
-  host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
+  host = login['hosts'][0] + ':' + login['ports'][0]
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  exec('mongodump -h ' + host + " -c " + collection + " -o '" + dumpdir + "'")
+  exec('mongodump -h ' + host + " --db #{login.database} -c " + collection + " -o '" + dumpdir + "'")
 
 for collection in all_collections
   mkexport mongourl, collection

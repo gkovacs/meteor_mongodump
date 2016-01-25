@@ -26,9 +26,9 @@ mkrestore = (uri, dumppath) ->
   login = mongo-uri.parse uri
   if not login.database?
     login.database = 'default'
-  host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
+  host = login['hosts'][0] + ':' + login['ports'][0]
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  exec('mongorestore --drop --host ' + host + " '" + dumppath + "'")
+  exec('mongorestore --drop --db #{login.database} --host ' + host + " '" + dumppath + "'")
 
 for dbpath in fs.readdirSync(dumpdir)
   console.log dumpdir + '/' + dbpath

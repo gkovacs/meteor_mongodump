@@ -23,8 +23,8 @@
     if (login.database == null) {
       login.database = 'default';
     }
-    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
-    return exec('mongorestore --drop --host ' + host + " '" + dumppath + "'");
+    host = login['hosts'][0] + ':' + login['ports'][0];
+    return exec('mongorestore --drop --db #{login.database} --host ' + host + " '" + dumppath + "'");
   };
   for (i$ = 0, len$ = (ref$ = fs.readdirSync(dumpdir)).length; i$ < len$; ++i$) {
     dbpath = ref$[i$];
