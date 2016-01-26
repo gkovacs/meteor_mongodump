@@ -1,6 +1,6 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {
@@ -12,7 +12,8 @@
     "mongodump_meteor": "./bin/mongodump_meteor",
     "mongorestore_meteor": "./bin/mongorestore_meteor",
     "mongodump_local": "./bin/mongodump_local",
-    "mongorestore_local": "./bin/mongorestore_local"
+    "mongorestore_local": "./bin/mongorestore_local",
+    "mongoexport_local": "./bin/mongoexport_local"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
