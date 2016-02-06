@@ -1,5 +1,6 @@
 require! {
   fs
+  levn
   'mongo-uri'
 }
 {exec} = require 'shelljs'
@@ -31,7 +32,7 @@ listcollections = (uri) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  return exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n').split(',')
+  return levn.parse '[String]', exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
 console.log 'collections:'
 all_collections = listcollections(mongourl)

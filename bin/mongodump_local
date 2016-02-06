@@ -15,15 +15,15 @@
   dumpdir = [meteorsitebase, curdate].join('_');
   console.log('mongourl: ' + mongourl);
   listcollections = function(uri){
-    var login, host;
+    var login, host, db, user, passwd;
     login = mongoUri.parse(uri);
-    if (login.database == null) {
-      login.database = 'default';
-    }
-    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
-    return exec("mongo " + host + " --eval 'db.getCollectionNames()'").output.trim().split('\n').filter(function(x){
+    host = login['hosts'][0] + ':' + login['ports'][0];
+    db = login['database'];
+    user = login['username'];
+    passwd = login['password'];
+    return levn.parse('[String]', exec("mongo --username " + user + " --password " + passwd + " " + (host + '/' + db) + " --eval 'db.getCollectionNames()'").output.trim().split('\n').filter(function(x){
       return x.indexOf('MongoDB shell version') === -1 && x.indexOf('connecting to:') === -1;
-    }).join('\n').split(',');
+    }).join('\n'));
   };
   console.log('collections:');
   all_collections = listcollections(mongourl);
