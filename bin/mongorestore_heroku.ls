@@ -1,5 +1,6 @@
 require! {
   fs
+  levn
   'mongo-uri'
 }
 
