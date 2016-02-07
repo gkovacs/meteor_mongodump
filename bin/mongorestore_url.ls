@@ -1,5 +1,6 @@
 require! {
   fs
+  levn
   'mongo-uri'
 }
 
@@ -8,9 +9,9 @@ require! {
 
 {exec} = require 'shelljs'
 
-meteorsite = process.argv[2]
-if not meteorsite?
-  console.log 'need to provide meteorsite'
+mongourl = process.avgv[2]
+if not mongourl?
+  console.log 'need to provide mongourl'
   process.exit()
 
 dumpdir = process.argv[3]
@@ -18,15 +19,9 @@ if not dumpdir?
   console.log 'need to provide dumpdir'
   process.exit()
 
-if meteorsite.indexOf('.meteor.com') == -1
-  meteorsite = meteorsite + '.meteor.com'
-meteorsitebase = meteorsite.split('.meteor.com').join('')
-
 if not fs.existsSync(dumpdir)
   console.log 'dumpdir does not exist: ' + dumpdir
   process.exit()
-
-mongourl = exec("meteor mongo --url #{meteorsite}").output.trim()
 
 console.log 'mongourl: ' + mongourl
 
