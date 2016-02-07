@@ -33,7 +33,7 @@
     } else {
       for (i$ = 0, len$ = (ref$ = collections).length; i$ < len$; ++i$) {
         collection = ref$[i$];
-        results$.push(exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --collection ' + collection + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'"));
+        results$.push(exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --collection ' + collection + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + ("/" + collection + ".bson'")));
       }
       return results$;
     }
