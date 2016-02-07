@@ -6,7 +6,7 @@
   levn = require('levn');
   mongoUri = require('mongo-uri');
   exec = require('shelljs').exec;
-  mongourl = process.avgv[2];
+  mongourl = process.argv[2];
   if (mongourl == null) {
     console.log('need to provide mongourl');
     process.exit();

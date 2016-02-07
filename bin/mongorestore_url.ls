@@ -9,7 +9,7 @@ require! {
 
 {exec} = require 'shelljs'
 
-mongourl = process.avgv[2]
+mongourl = process.argv[2]
 if not mongourl?
   console.log 'need to provide mongourl'
   process.exit()
