@@ -22,6 +22,8 @@ console.log 'mongourl: ' + mongourl
 
 listcollections = (uri) ->
   login = mongo-uri.parse uri
+  if login['hosts'][0] == 'localhost'
+    login['hosts'][0] = '127.0.0.1'
   host = login['hosts'][0] + ':' + login['ports'][0]
   db = login['database']
   user = login['username']
@@ -58,4 +60,6 @@ mkexport = (uri, collection) ->
   exec(mongocmdstr)
 
 for collection in all_collections
+  if collection.startsWith('system.')
+    continue
   mkexport mongourl, collection

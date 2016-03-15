@@ -23,6 +23,8 @@ listcollections = (uri) ->
   login = mongo-uri.parse uri
   if not login.database?
     login.database = 'default'
+  if login['hosts'][0] == 'localhost'
+    login['hosts'][0] = '127.0.0.1'
   host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database']
   return exec("mongo #{host} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n').split(',')
 
@@ -39,10 +41,14 @@ mkexport = (uri, collection) ->
   login = mongo-uri.parse uri
   if not login.database?
     login.database = 'default'
+  if login['hosts'][0] == 'localhost'
+    login['hosts'][0] = '127.0.0.1'
   host = login['hosts'][0] + ':' + login['ports'][0]
   outfile = dumpdir + '/' + collection + '.json'
   exec('mongoexport --jsonArray -h ' + host + " --db #{login.database} -c " + collection + " -o '" + outfile + "'")
   #exec('mongodump -h ' + host + " --db #{login.database} -c " + collection + " -o '" + dumpdir + "'")
 
 for collection in all_collections
+  if collection.startsWith('system.')
+    continue
   mkexport mongourl, collection

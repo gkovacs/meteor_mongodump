@@ -18,6 +18,9 @@
   listcollections = function(uri){
     var login, host, db, user, passwd, mongocmd, mongocmdstr;
     login = mongoUri.parse(uri);
+    if (login['hosts'][0] === 'localhost') {
+      login['hosts'][0] = '127.0.0.1';
+    }
     host = login['hosts'][0] + ':' + login['ports'][0];
     db = login['database'];
     user = login['username'];
@@ -57,6 +60,9 @@
   };
   for (i$ = 0, len$ = all_collections.length; i$ < len$; ++i$) {
     collection = all_collections[i$];
+    if (collection.startsWith('system.')) {
+      continue;
+    }
     mkexport(mongourl, collection);
   }
 }).call(this);
