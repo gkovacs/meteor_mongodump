@@ -1,6 +1,7 @@
 require! {
   fs
   'mongo-uri'
+  levn
 }
 {exec} = require 'shelljs'
 
@@ -37,8 +38,8 @@ listcollections = (uri) ->
   #console.log mongocmdstr
   return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
-console.log 'collections:'
 all_collections = listcollections(mongourl)
+console.log 'collections:'
 console.log all_collections
 
 if all_collections.length == 0
