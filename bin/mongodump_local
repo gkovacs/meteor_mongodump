@@ -16,13 +16,22 @@
   dumpdir = [meteorsitebase, curdate].join('_');
   console.log('mongourl: ' + mongourl);
   listcollections = function(uri){
-    var login, host, db, user, passwd;
+    var login, host, db, user, passwd, mongocmd, mongocmdstr;
     login = mongoUri.parse(uri);
     host = login['hosts'][0] + ':' + login['ports'][0];
     db = login['database'];
     user = login['username'];
     passwd = login['password'];
-    return levn.parse('[String]', exec("mongo --username " + user + " --password " + passwd + " " + (host + '/' + db) + " --eval 'db.getCollectionNames()'").output.trim().split('\n').filter(function(x){
+    mongocmd = ['mongo'];
+    if (user != null) {
+      mongocmd.push("--username " + user);
+    }
+    if (passwd != null) {
+      mongocmd.push("--password " + passwd);
+    }
+    mongocmd.push((host + '/' + db) + " --eval 'db.getCollectionNames()'");
+    mongocmdstr = mongocmd.join(' ');
+    return levn.parse('[String]', exec(mongocmdstr).output.trim().split('\n').filter(function(x){
       return x.indexOf('MongoDB shell version') === -1 && x.indexOf('connecting to:') === -1;
     }).join('\n'));
   };
@@ -34,13 +43,17 @@
     process.exit();
   }
   mkexport = function(uri, collection){
-    var login, host;
+    var login, host, mongocmdstr;
     login = mongoUri.parse(uri);
     if (login.database == null) {
       login.database = 'default';
     }
+    if (login['hosts'][0] === 'localhost') {
+      login['hosts'][0] = '127.0.0.1';
+    }
     host = login['hosts'][0] + ':' + login['ports'][0];
-    return exec('mongodump -h ' + host + (" --db " + login.database + " -c ") + collection + " -o '" + dumpdir + "'");
+    mongocmdstr = "mongodump -h " + host + " --db " + login.database + " -c " + collection + " -o '" + dumpdir + "'";
+    return exec(mongocmdstr);
   };
   for (i$ = 0, len$ = all_collections.length; i$ < len$; ++i$) {
     collection = all_collections[i$];

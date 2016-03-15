@@ -26,7 +26,15 @@ listcollections = (uri) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  return levn.parse '[String]', exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
+  mongocmd = ['mongo']
+  if user?
+    mongocmd.push "--username #{user}"
+  if passwd?
+    mongocmd.push "--password #{passwd}"
+  mongocmd.push "#{host + '/' + db} --eval 'db.getCollectionNames()'"
+  mongocmdstr = mongocmd.join(' ')
+  #console.log mongocmdstr
+  return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
 console.log 'collections:'
 all_collections = listcollections(mongourl)
@@ -41,9 +49,13 @@ mkexport = (uri, collection) ->
   login = mongo-uri.parse uri
   if not login.database?
     login.database = 'default'
+  if login['hosts'][0] == 'localhost'
+    login['hosts'][0] = '127.0.0.1'
   host = login['hosts'][0] + ':' + login['ports'][0]
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  exec('mongodump -h ' + host + " --db #{login.database} -c " + collection + " -o '" + dumpdir + "'")
+  mongocmdstr = "mongodump -h #{host} --db #{login.database} -c #{collection} -o '#{dumpdir}'"
+  #console.log mongocmdstr
+  exec(mongocmdstr)
 
 for collection in all_collections
   mkexport mongourl, collection
