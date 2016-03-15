@@ -15,18 +15,27 @@
   dumpdir = [meteorsitebase, curdate].join('_');
   console.log('mongourl: ' + mongourl);
   listcollections = function(uri){
-    var login, host;
+    var login, host, db, user, passwd, mongocmd, mongocmdstr;
     login = mongoUri.parse(uri);
-    if (login.database == null) {
-      login.database = 'default';
-    }
     if (login['hosts'][0] === 'localhost') {
       login['hosts'][0] = '127.0.0.1';
     }
-    host = login['hosts'][0] + ':' + login['ports'][0] + '/' + login['database'];
-    return exec("mongo " + host + " --eval 'db.getCollectionNames()'").output.trim().split('\n').filter(function(x){
+    host = login['hosts'][0] + ':' + login['ports'][0];
+    db = login['database'];
+    user = login['username'];
+    passwd = login['password'];
+    mongocmd = ['mongo'];
+    if (user != null) {
+      mongocmd.push("--username " + user);
+    }
+    if (passwd != null) {
+      mongocmd.push("--password " + passwd);
+    }
+    mongocmd.push((host + '/' + db) + " --eval 'db.getCollectionNames()'");
+    mongocmdstr = mongocmd.join(' ');
+    return levn.parse('[String]', exec(mongocmdstr).output.trim().split('\n').filter(function(x){
       return x.indexOf('MongoDB shell version') === -1 && x.indexOf('connecting to:') === -1;
-    }).join('\n').split(',');
+    }).join('\n'));
   };
   console.log('collections:');
   all_collections = listcollections(mongourl);
