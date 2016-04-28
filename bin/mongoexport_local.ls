@@ -18,6 +18,11 @@ meteorsite = meteorsitebase = 'local'
 
 dumpdir = [meteorsitebase, curdate].join('_')
 
+is_resuming = false
+if process.argv[2]?
+  dumpdir = process.argv[2]
+  is_resuming = true
+
 console.log 'mongourl: ' + mongourl
 
 listcollections = (uri) ->
@@ -61,7 +66,7 @@ mkexport = (uri, collection) ->
 for collection in all_collections
   if collection.startsWith('system.')
     continue
-  if fs.existsSync(dumpdir + '/' + collection + '.json')
+  if is_resuming and fs.existsSync(dumpdir + '/' + collection + '.json')
     console.log 'already have ' + collection
     continue
   mkexport mongourl, collection
