@@ -61,4 +61,7 @@ mkexport = (uri, collection) ->
 for collection in all_collections
   if collection.startsWith('system.')
     continue
+  if fs.existsSync(dumpdir + '/' + collection + '.json')
+    console.log 'already have ' + collection
+    continue
   mkexport mongourl, collection
