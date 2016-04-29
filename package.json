@@ -1,6 +1,6 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {

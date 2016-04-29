@@ -94,10 +94,11 @@ getcollection_dst = (collection_name, callback) ->
   callback db.collection(collection_name), db
 
 copy_collection = (collection_name, callback) ->
+  console.log collection_name
   collection_src, db_src <- getcollection_src collection_name
   collection_dst, db_dst <- getcollection_dst collection_name
   err1, docs_src <- collection_src.find({}).toArray!
-  err2, docs_dst <- collection_dst.find({}).toArray!
+  err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
   dest_ids = {[x._id, true] for x in docs_dst}
   docs_src_new = [x for x in docs_src when not dest_ids[x._id]?]
   if docs_src_new.length == 0

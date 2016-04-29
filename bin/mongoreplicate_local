@@ -98,10 +98,13 @@
     });
   };
   copy_collection = function(collection_name, callback){
+    console.log(collection_name);
     return getcollection_src(collection_name, function(collection_src, db_src){
       return getcollection_dst(collection_name, function(collection_dst, db_dst){
         return collection_src.find({}).toArray(function(err1, docs_src){
-          return collection_dst.find({}).toArray(function(err2, docs_dst){
+          return collection_dst.find({}, {
+            _id: 1
+          }).toArray(function(err2, docs_dst){
             var dest_ids, res$, i$, len$, x, docs_src_new, ref$;
             res$ = {};
             for (i$ = 0, len$ = docs_dst.length; i$ < len$; ++i$) {
