@@ -1,10 +1,11 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {
     "async": "^2.0.0-rc.3",
+    "asyncblock": "^2.2.8",
     "levn": "^0.3.0",
     "mongo-uri": "^0.1.2",
     "mongodb": "^2.1.18",

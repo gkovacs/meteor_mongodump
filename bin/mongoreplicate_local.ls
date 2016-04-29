@@ -4,6 +4,8 @@
 # can use ssh tunnel to make remote host accessible on port 27017
 # ssh -L 27018:localhost:27017 user@remotehost
 
+require! asyncblock
+
 require! {
   async
   'mongo-uri'
@@ -93,7 +95,7 @@ getcollection_dst = (collection_name, callback) ->
   db <- getdb_dst!
   callback db.collection(collection_name), db
 
-copy_collection = (collection_name, callback) ->
+copy_collection_orig = (collection_name, callback) ->
   console.log collection_name
   collection_src, db_src <- getcollection_src collection_name
   collection_dst, db_dst <- getcollection_dst collection_name
@@ -109,6 +111,30 @@ copy_collection = (collection_name, callback) ->
   db_src.close!
   db_dst.close!
   return callback?!
+
+copy_collection = (collection_name, callback) ->
+  console.log collection_name
+  collection_src, db_src <- getcollection_src collection_name
+  collection_dst, db_dst <- getcollection_dst collection_name
+  err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
+  dest_ids = {[x._id, true] for x in docs_dst}
+  asyncblock (flow) ->
+    have_more = true
+    num_skipped = 0
+    batch_size = 1000
+    while have_more
+      docs_src = flow.sync collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(flow.callback!)
+      if docs_src.length == 0
+        have_more = false
+        break
+      num_skipped += batch_size
+      docs_src_new = [x for x in docs_src when not dest_ids[x._id]?]
+      if docs_src_new.length == 0
+        continue
+      flow.sync collection_dst.insertMany(docs_src_new, {}, flow.callback!)
+    db_src.close!
+    db_dst.close!
+    return callback?!
 
 async.eachSeries all_collections, (collection_name, donecb) ->
   copy_collection collection_name, donecb
