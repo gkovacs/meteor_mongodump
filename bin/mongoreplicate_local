@@ -157,7 +157,7 @@
             batch_size = 1000;
             while (have_more) {
               docs_src = flow.sync(collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(flow.callback()));
-              if (docs_src.length === 0) {
+              if (docs_src == null || docs_src.length === 0) {
                 have_more = false;
                 break;
               }

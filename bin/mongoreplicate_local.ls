@@ -124,7 +124,7 @@ copy_collection = (collection_name, callback) ->
     batch_size = 1000
     while have_more
       docs_src = flow.sync collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(flow.callback!)
-      if docs_src.length == 0
+      if not docs_src? or docs_src.length == 0
         have_more = false
         break
       num_skipped += batch_size
