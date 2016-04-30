@@ -106,12 +106,16 @@
           _id: 1
         }).toArray(function(err2, docs_dst){
           var dest_ids_list, res$, i$, len$, x;
-          res$ = [];
-          for (i$ = 0, len$ = docs_dst.length; i$ < len$; ++i$) {
-            x = docs_dst[i$];
-            res$.push(x._id);
+          if (docs_dst != null) {
+            res$ = [];
+            for (i$ = 0, len$ = docs_dst.length; i$ < len$; ++i$) {
+              x = docs_dst[i$];
+              res$.push(x._id);
+            }
+            dest_ids_list = res$;
+          } else {
+            dest_ids_list = [];
           }
-          dest_ids_list = res$;
           if (dest_ids_list.length === 0) {
             db_src.close();
             db_dst.close();

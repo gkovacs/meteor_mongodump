@@ -100,7 +100,10 @@ remove_replicated_collection = (collection_name, callback) ->
   collection_src, db_src <- getcollection_src collection_name
   collection_dst, db_dst <- getcollection_dst collection_name
   err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
-  dest_ids_list = [x._id for x in docs_dst]
+  if docs_dst?
+    dest_ids_list = [x._id for x in docs_dst]
+  else
+    dest_ids_list = []
   if dest_ids_list.length == 0
     db_src.close!
     db_dst.close!
