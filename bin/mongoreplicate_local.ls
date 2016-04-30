@@ -137,4 +137,6 @@ copy_collection = (collection_name, callback) ->
     return callback?!
 
 async.eachSeries all_collections, (collection_name, donecb) ->
+  if collection_name.startsWith('system.')
+    return donecb!
   copy_collection collection_name, donecb

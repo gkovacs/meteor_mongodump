@@ -135,6 +135,9 @@
     });
   };
   async.eachSeries(all_collections, function(collection_name, donecb){
+    if (collection_name.startsWith('system.')) {
+      return donecb();
+    }
     return remove_replicated_collection(collection_name, donecb);
   });
 }).call(this);
