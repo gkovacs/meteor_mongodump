@@ -117,7 +117,7 @@ copy_collection = (collection_name, callback) ->
   collection_src, db_src <- getcollection_src collection_name
   collection_dst, db_dst <- getcollection_dst collection_name
   err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
-  dest_ids = {[x._id, true] for x in docs_dst}
+  dest_ids = {[x._id.toString(), true] for x in docs_dst}
   asyncblock (flow) ->
     have_more = true
     num_skipped = 0
@@ -128,7 +128,7 @@ copy_collection = (collection_name, callback) ->
         have_more = false
         break
       num_skipped += batch_size
-      docs_src_new = [x for x in docs_src when not dest_ids[x._id]?]
+      docs_src_new = [x for x in docs_src when not dest_ids[x._id.toString()]?]
       if docs_src_new.length == 0
         continue
       flow.sync collection_dst.insertMany(docs_src_new, {}, flow.callback!)

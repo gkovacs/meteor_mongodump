@@ -147,7 +147,7 @@
           res$ = {};
           for (i$ = 0, len$ = docs_dst.length; i$ < len$; ++i$) {
             x = docs_dst[i$];
-            res$[x._id] = true;
+            res$[x._id.toString()] = true;
           }
           dest_ids = res$;
           return asyncblock(function(flow){
@@ -165,7 +165,7 @@
               res$ = [];
               for (i$ = 0, len$ = docs_src.length; i$ < len$; ++i$) {
                 x = docs_src[i$];
-                if (dest_ids[x._id] == null) {
+                if (dest_ids[x._id.toString()] == null) {
                   res$.push(x);
                 }
               }
