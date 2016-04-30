@@ -65,7 +65,7 @@ listcollections = (uri) ->
   #console.log mongocmdstr
   return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
-all_collections = listcollections(mongourl_src)
+all_collections = listcollections(mongourl_dst)
 console.log 'collections:'
 console.log all_collections
 
