@@ -113,11 +113,20 @@
         return collection_dst.find({}, {
           _id: 1
         }).toArray(function(err2, docs_dst){
-          var dest_ids, res$, i$, len$, x, have_more, num_skipped, batch_size;
-          res$ = {};
+          var dest_ids_list, res$, i$, len$, x, dest_ids, have_more, num_skipped, batch_size;
+          if (docs_dst == null) {
+            docs_dst = [];
+          }
+          res$ = [];
           for (i$ = 0, len$ = docs_dst.length; i$ < len$; ++i$) {
             x = docs_dst[i$];
-            res$[x._id.toString()] = true;
+            res$.push(x._id);
+          }
+          dest_ids_list = res$;
+          res$ = {};
+          for (i$ = 0, len$ = dest_ids_list.length; i$ < len$; ++i$) {
+            x = dest_ids_list[i$];
+            res$[x.toString()] = true;
           }
           dest_ids = res$;
           have_more = true;
@@ -126,7 +135,11 @@
           return async.whilst(function(){
             return have_more;
           }, function(donecb){
-            return collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(function(err3, docs_src){
+            return collection_src.find({
+              _id: {
+                $nin: dest_ids_list
+              }
+            }).skip(num_skipped).limit(batch_size).toArray(function(err3, docs_src){
               var docs_src_new, res$, i$, len$, x;
               if (docs_src == null || docs_src.length === 0) {
                 have_more = false;
