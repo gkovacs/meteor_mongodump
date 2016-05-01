@@ -108,7 +108,6 @@ copy_collection = (collection_name, callback) ->
   if not docs_dst?
     docs_dst = []
   dest_ids_list = [x._id for x in docs_dst]
-  dest_ids = {[x.toString(), true] for x in dest_ids_list}
   have_more = true
   num_skipped = 0
   batch_size = 10000
@@ -120,10 +119,7 @@ copy_collection = (collection_name, callback) ->
         have_more := false
         return donecb!
       num_skipped := num_skipped + batch_size
-      docs_src_new = [x for x in docs_src when not dest_ids[x._id.toString()]?]
-      if docs_src_new.length == 0
-        return donecb!
-      <- collection_dst.insertMany docs_src_new, {}
+      <- collection_dst.insertMany docs_src, {}
       donecb!
   )
   db_src.close!
