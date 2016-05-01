@@ -108,7 +108,7 @@ copy_collection = (collection_name, callback) ->
   dest_ids = {[x._id.toString(), true] for x in docs_dst}
   have_more = true
   num_skipped = 0
-  batch_size = 1000
+  batch_size = 10000
   <- async.whilst(
     -> have_more
     , (donecb) ->
