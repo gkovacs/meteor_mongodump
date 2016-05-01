@@ -105,21 +105,22 @@ copy_collection = (collection_name, callback) ->
   collection_src, db_src <- getcollection_src collection_name
   collection_dst, db_dst <- getcollection_dst collection_name
   err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
-  if not docs_dst?
-    docs_dst = []
-  dest_ids_list = [x._id for x in docs_dst]
+  dest_ids = {[x._id.toString(), true] for x in docs_dst}
   have_more = true
   num_skipped = 0
   batch_size = 10000
   <- async.whilst(
     -> have_more
     , (donecb) ->
-      err3, docs_src <- collection_src.find({_id: {$nin: dest_ids_list}}).skip(num_skipped).limit(batch_size).toArray!
+      err3, docs_src <- collection_src.find({}).skip(num_skipped).limit(batch_size).toArray!
       if not docs_src? or docs_src.length == 0
         have_more := false
         return donecb!
       num_skipped := num_skipped + batch_size
-      <- collection_dst.insertMany docs_src, {}
+      docs_src_new = [x for x in docs_src when not dest_ids[x._id.toString()]?]
+      if docs_src_new.length == 0
+        return donecb!
+      <- collection_dst.insertMany docs_src_new, {}
       donecb!
   )
   db_src.close!
