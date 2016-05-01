@@ -129,11 +129,11 @@
             db_dst.close();
             return typeof callback == 'function' ? callback() : void 8;
           }
-          return async.eachSeries(dest_ids_list, function(item, donecb){
-            return collection_src.deleteOne({
-              _id: item
-            }, {}, donecb);
-          }, function(){
+          return collection_src.deleteMany({
+            _id: {
+              $in: dest_ids_list
+            }
+          }, {}, function(err3, result){
             db_src.close();
             db_dst.close();
             return typeof callback == 'function' ? callback() : void 8;
