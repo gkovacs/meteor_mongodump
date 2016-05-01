@@ -4,7 +4,6 @@
 # can use ssh tunnel to make remote host accessible on port 27017
 # ssh -L 27018:localhost:27017 user@remotehost
 
-require! asyncblock
 
 require! {
   async
