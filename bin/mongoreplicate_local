@@ -126,7 +126,7 @@
           return async.whilst(function(){
             return have_more;
           }, function(donecb){
-            return flow.sync(collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(), function(err3, docs_src){
+            return collection_src.find({}).skip(num_skipped).limit(batch_size).toArray(function(err3, docs_src){
               var docs_src_new, res$, i$, len$, x;
               if (docs_src == null || docs_src.length === 0) {
                 have_more = false;

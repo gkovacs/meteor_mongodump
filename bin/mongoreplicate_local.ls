@@ -112,7 +112,7 @@ copy_collection = (collection_name, callback) ->
   <- async.whilst(
     -> have_more
     , (donecb) ->
-      err3, docs_src <- flow.sync collection_src.find({}).skip(num_skipped).limit(batch_size).toArray!
+      err3, docs_src <- collection_src.find({}).skip(num_skipped).limit(batch_size).toArray!
       if not docs_src? or docs_src.length == 0
         have_more := false
         return donecb!
