@@ -116,7 +116,7 @@ remove_replicated_collection = (collection_name, callback) ->
     return callback?!
   #err3, result <- collection_src.deleteMany {filter: {_id: {$in: dest_ids_list}}}, {}
   <- async.eachSeries dest_ids_list, (item, donecb) ->
-    collection_src.deleteOne {_id: ObjectId(item)}, {}, donecb
+    collection_src.deleteOne {_id: item}, {}, donecb
   db_src.close!
   db_dst.close!
   return callback?!
