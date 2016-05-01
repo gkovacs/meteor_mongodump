@@ -26,6 +26,10 @@ option_parser = optionator {
       type: 'String'
       description: 'destination mongo url'
       default: 'mongodb://localhost:27017/default'
+    * option: 'collections'
+      alias: 'c'
+      type: 'String'
+      description: 'comma-separated list of collections to operate on'
     * option: 'help'
       alias: 'h'
       type: 'Boolean'
@@ -64,7 +68,10 @@ listcollections = (uri) ->
   #console.log mongocmdstr
   return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
-all_collections = listcollections(mongourl_dst)
+if options.collections?
+  all_collections = options.collections.split(',')
+else
+  all_collections = listcollections(mongourl_dst)
 console.log 'collections:'
 console.log all_collections
 
