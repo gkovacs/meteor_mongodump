@@ -11,7 +11,7 @@ require! {
   levn
   optionator
   shelljs: {exec}
-  mongodb: {MongoClient}
+  mongodb: {MongoClient, ObjectId}
 }
 
 option_parser = optionator {
@@ -107,7 +107,7 @@ remove_replicated_collection = (collection_name, callback) ->
   collection_dst, db_dst <- getcollection_dst collection_name
   err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
   if docs_dst?
-    dest_ids_list = [x._id for x in docs_dst]
+    dest_ids_list = [x._id.toString() for x in docs_dst]
   else
     dest_ids_list = []
   if dest_ids_list.length == 0
@@ -116,7 +116,7 @@ remove_replicated_collection = (collection_name, callback) ->
     return callback?!
   #err3, result <- collection_src.deleteMany {filter: {_id: {$in: dest_ids_list}}}, {}
   <- async.eachSeries dest_ids_list, (item, donecb) ->
-    collection_src.deleteOne {_id: item}, {}, donecb
+    collection_src.deleteOne {_id: ObjectId(item)}, {}, donecb
   db_src.close!
   db_dst.close!
   return callback?!
