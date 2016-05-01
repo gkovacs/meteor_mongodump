@@ -131,7 +131,7 @@
           }
           return async.eachSeries(dest_ids_list, function(item, donecb){
             return collection_src.deleteOne({
-              _id: ObjectId(item)
+              _id: item
             }, {}, donecb);
           }, function(){
             db_src.close();
