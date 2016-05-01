@@ -104,8 +104,13 @@ getcollection_dst = (collection_name, callback) ->
 remove_replicated_collection = (collection_name, callback) ->
   console.log collection_name
   collection_src, db_src <- getcollection_src collection_name
+  err1, docs_src <- collection_src.find({}, {_id: 1}).toArray!
+  if not docs_src? or docs_src.length == 0
+    db_src.close!
+    return callback?!
+  src_ids_list = [x._id for x in docs_src]
   collection_dst, db_dst <- getcollection_dst collection_name
-  err2, docs_dst <- collection_dst.find({}, {_id: 1}).toArray!
+  err2, docs_dst <- collection_dst.find({_id: {$in: src_ids_list}}, {_id: 1}).toArray!
   if docs_dst?
     dest_ids_list = [x._id for x in docs_dst]
   else
