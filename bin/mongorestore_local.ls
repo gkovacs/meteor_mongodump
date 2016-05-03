@@ -1,12 +1,17 @@
 require! {
   fs
   'mongo-uri'
+  ffi
 }
 
 # usage:
 # meteor_mongorestore crowdresearch path_to_some_dump
 
-{exec} = require 'shelljs'
+# {exec} = require 'shelljs'
+libc = new ffi.Library 'libc', {
+  'system': ['int32', ['string']]
+}
+run = libc.system
 
 dumpdir = process.argv[2]
 if not dumpdir?
@@ -34,10 +39,10 @@ mkrestore = (uri, dumppath) ->
   passwd = login['password']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
   if not collections?
-    exec('mongorestore --host ' + host + ' --db ' + db + " '" + dumppath + "'")
+    run('mongorestore --host ' + host + ' --db ' + db + " '" + dumppath + "'")
   else
     for collection in collections
-      exec('mongorestore --host ' + host + ' --db ' + db + ' --collection ' + collection + " '" + dumppath + "/#{collection}.bson'")
+      run('mongorestore --host ' + host + ' --db ' + db + ' --collection ' + collection + " '" + dumppath + "/#{collection}.bson'")
 
 for dbpath in fs.readdirSync(dumpdir)
   console.log dumpdir + '/' + dbpath
