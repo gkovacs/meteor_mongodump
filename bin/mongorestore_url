@@ -37,11 +37,11 @@
     user = login['username'];
     passwd = login['password'];
     if (collections == null) {
-      return exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'");
+      return exec('mongorestore --host ' + host + ' --db ' + db + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'");
     } else {
       for (i$ = 0, len$ = (ref$ = collections).length; i$ < len$; ++i$) {
         collection = ref$[i$];
-        results$.push(exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --collection ' + collection + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + ("/" + collection + ".bson'")));
+        results$.push(exec('mongorestore --host ' + host + ' --db ' + db + ' --collection ' + collection + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + ("/" + collection + ".bson'")));
       }
       return results$;
     }
