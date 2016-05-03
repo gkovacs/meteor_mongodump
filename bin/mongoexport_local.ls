@@ -41,7 +41,7 @@ listcollections = (uri) ->
   mongocmd.push "#{host + '/' + db} --eval 'db.getCollectionNames()'"
   mongocmdstr = mongocmd.join(' ')
   #console.log mongocmdstr
-  return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
+  return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1 && x.indexOf('readMode, degrading to') == -1).join('\n')
 
 all_collections = listcollections(mongourl)
 console.log 'collections:'

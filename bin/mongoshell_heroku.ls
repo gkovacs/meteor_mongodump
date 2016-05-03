@@ -11,7 +11,9 @@ if not herokusite?
 
 herokusite = herokusite.split('.herokuapp.com').join('')
 
-mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").output.trim()
+mongourl = exec("heroku config:get MONGODB_URI --app #{herokusite}").output.trim()
+if mongourl == ''
+  mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").output.trim()
 
 if mongourl.indexOf('mongodb://') != 0
   console.log 'mongourl does not begin with mongodb://'

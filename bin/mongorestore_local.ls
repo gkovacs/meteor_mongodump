@@ -34,10 +34,10 @@ mkrestore = (uri, dumppath) ->
   passwd = login['password']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
   if not collections?
-    exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "'")
+    exec('mongorestore --drop --host ' + host + ' --db ' + db + " '" + dumppath + "'")
   else
     for collection in collections
-      exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --collection ' + collection + ' --username ' + user + ' --password ' + passwd + " '" + dumppath + "/#{collection}.bson'")
+      exec('mongorestore --drop --host ' + host + ' --db ' + db + ' --collection ' + collection + " '" + dumppath + "/#{collection}.bson'")
 
 for dbpath in fs.readdirSync(dumpdir)
   console.log dumpdir + '/' + dbpath

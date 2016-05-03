@@ -38,7 +38,7 @@ listcollections = (uri) ->
   mongocmd.push "#{host + '/' + db} --eval 'db.getCollectionNames()'"
   mongocmdstr = mongocmd.join(' ')
   #console.log mongocmdstr
-  return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
+  return levn.parse '[String]', exec(mongocmdstr).output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1 && x.indexOf('readMode, degrading to') == -1).join('\n')
 
 all_collections = listcollections(mongourl)
 console.log 'collections:'
@@ -57,7 +57,7 @@ mkexport = (uri, collection) ->
     login['hosts'][0] = '127.0.0.1'
   host = login['hosts'][0] + ':' + login['ports'][0]
   outfile = dumpdir + '/' + collection + '.json'
-  exec('mongoexport --jsonArray -h ' + host + " --db #{login.database} -c " + collection + " -o '" + outfile + "'")
+  exec('mongoexport --jsonArray -h ' + host + " -u #{login.username} -p #{login.password} --db #{login.database} -c " + collection + " -o '" + outfile + "'")
   #exec('mongodump -h ' + host + " --db #{login.database} -c " + collection + " -o '" + dumpdir + "'")
 
 for collection in all_collections
