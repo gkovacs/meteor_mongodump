@@ -25,10 +25,11 @@
     db = login['database'];
     user = login['username'];
     passwd = login['password'];
-    return sysexec('mongoimport --host ' + host + ' --db ' + db + " '" + dumppath + "'");
+    return sysexec('mongoimport --jsonArray --upsert --host ' + host + ' --db ' + db + " '" + dumppath + "'");
   };
   for (i$ = 0, len$ = (ref$ = glob.sync(dumpdir + '/*.json')).length; i$ < len$; ++i$) {
     dbpath = ref$[i$];
+    console.log(dbpath);
     mkrestore(mongourl, dbpath);
   }
 }).call(this);
