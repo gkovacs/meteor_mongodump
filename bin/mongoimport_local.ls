@@ -5,6 +5,8 @@ require! {
   glob
 }
 
+{exec} = require 'shelljs'
+
 # usage:
 # meteor_mongorestore crowdresearch path_to_some_dump
 
@@ -35,7 +37,7 @@ mkrestore = (uri, dumppath) ->
   collection = dumppath.split('/')[-1 to][0].split('.json').join('')
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
   console.log("mongoimport --jsonArray --upsert --host #{host} --db #{db} --collection #{collection} --file #{dumppath}")
-  sysexec("mongoimport --jsonArray --upsert --host #{host} --db #{db} --collection #{collection} --file #{dumppath}")
+  exec("mongoimport --jsonArray --upsert --host #{host} --db #{db} --collection #{collection} --file #{dumppath}")
 
 for dbpath in glob.sync(dumpdir + '/*.json')
   console.log dbpath
