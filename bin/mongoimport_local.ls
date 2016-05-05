@@ -1,7 +1,6 @@
 require! {
   fs
   'mongo-uri'
-  ffi
   sysexec
   glob
 }
