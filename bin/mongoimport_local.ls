@@ -3,12 +3,11 @@ require! {
   'mongo-uri'
   ffi
   sysexec
+  glob
 }
 
 # usage:
 # meteor_mongorestore crowdresearch path_to_some_dump
-
-# {exec} = require 'shelljs'
 
 dumpdir = process.argv[2]
 if not dumpdir?
@@ -24,9 +23,9 @@ meteorsite = meteorsitebase = 'local'
 
 console.log 'mongourl: ' + mongourl
 
-collections = process.argv[4]
-if collections?
-  collections = levn.parse '[String]', collections
+#collections = process.argv[4]
+#if collections?
+#  collections = levn.parse '[String]', collections
 
 mkrestore = (uri, dumppath) ->
   login = mongo-uri.parse uri
@@ -35,13 +34,7 @@ mkrestore = (uri, dumppath) ->
   user = login['username']
   passwd = login['password']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  sysexec('mongorestore --host ' + host + ' --db ' + db + " '" + dumppath + "'")
-  #if not collections?
-  #  run('mongorestore --host ' + host + ' --db ' + db + " '" + dumppath + "'")
-  #else
-  #  for collection in collections
-  #    run('mongorestore --host ' + host + ' --db ' + db + ' --collection ' + collection + " '" + dumppath + "/#{collection}.bson'")
+  sysexec('mongoimport --host ' + host + ' --db ' + db + " '" + dumppath + "'")
 
-for dbpath in fs.readdirSync(dumpdir)
-  console.log dumpdir + '/' + dbpath
-  mkrestore mongourl, "#{dumpdir}/#{dbpath}"
+for dbpath in glob.sync(dumpdir + '/*.json')
+  mkrestore mongourl, dbpath
