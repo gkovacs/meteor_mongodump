@@ -25,8 +25,8 @@
     db = login['database'];
     user = login['username'];
     passwd = login['password'];
-    console.log("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --file '${dumppath}'");
-    return sysexec("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --file '${dumppath}'");
+    console.log("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --file '" + dumppath + "'");
+    return sysexec("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --file '" + dumppath + "'");
   };
   for (i$ = 0, len$ = (ref$ = glob.sync(dumpdir + '/*.json')).length; i$ < len$; ++i$) {
     dbpath = ref$[i$];
