@@ -5,6 +5,7 @@
   "main": "bin/mongodump_meteor",
   "dependencies": {
     "async": "^2.0.0-rc.3",
+    "glob": "^7.0.3",
     "levn": "^0.3.0",
     "mongo-uri": "^0.1.2",
     "mongodb": "^2.1.18",
