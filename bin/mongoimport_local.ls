@@ -33,7 +33,8 @@ mkrestore = (uri, dumppath) ->
   user = login['username']
   passwd = login['password']
   #exec('mongoexport -h ' + host + ' -d ' + db + ' -u ' + user + ' -p ' + passwd + " -c " + collection + " -o '" + outfile + "'")
-  sysexec('mongoimport --jsonArray --upsert --host ' + host + ' --db ' + db + " '" + dumppath + "'")
+  console.log("mongoimport --jsonArray --upsert --host #{host} --db #{db} --file '${dumppath}'")
+  sysexec("mongoimport --jsonArray --upsert --host #{host} --db #{db} --file '${dumppath}'")
 
 for dbpath in glob.sync(dumpdir + '/*.json')
   console.log dbpath
