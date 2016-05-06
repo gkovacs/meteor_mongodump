@@ -35,8 +35,8 @@
     user = login['username'];
     passwd = login['password'];
     collection = slice$.call(dumppath.split('/'), -1)[0].split('.json').join('');
-    console.log("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --collection " + collection + " --file " + dumppath);
-    return exec("mongoimport --jsonArray --upsert --host " + host + " --db " + db + " --collection " + collection + " --file " + dumppath);
+    console.log("mongoimport --username " + user + " --password " + passwd + " --jsonArray --upsert --host " + host + " --db " + db + " --collection " + collection + " --file " + dumppath);
+    return exec("mongoimport --username " + user + " --password " + passwd + " --jsonArray --upsert --host " + host + " --db " + db + " --collection " + collection + " --file " + dumppath);
   };
   for (i$ = 0, len$ = (ref$ = glob.sync(dumpdir + '/*.json')).length; i$ < len$; ++i$) {
     dbpath = ref$[i$];
