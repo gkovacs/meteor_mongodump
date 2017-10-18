@@ -1,6 +1,6 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.73",
+  "version": "1.0.74",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {
@@ -10,7 +10,7 @@
     "mongo-uri": "^0.1.2",
     "mongodb": "^2.1.18",
     "optionator": "^0.8.1",
-    "shelljs": "^0.5.1",
+    "shelljs": "^0.7.8",
     "sysexec": "^1.0.1"
   },
   "devDependencies": {},
