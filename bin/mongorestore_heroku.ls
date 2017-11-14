@@ -25,7 +25,7 @@ if not fs.existsSync(dumpdir)
   console.log 'dumpdir does not exist: ' + dumpdir
   process.exit()
 
-mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").output.trim()
+mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").stdout.trim()
 
 console.log 'mongourl: ' + mongourl
 

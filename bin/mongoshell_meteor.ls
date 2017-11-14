@@ -11,7 +11,7 @@ if not meteorsite?
 if meteorsite.indexOf('.meteor.com') == -1
   meteorsite = meteorsite + '.meteor.com'
 
-mongourl = exec("meteor mongo --url #{meteorsite}").output.trim()
+mongourl = exec("meteor mongo --url #{meteorsite}").stdout.trim()
 
 if mongourl.indexOf('mongodb://') != 0
   console.log 'mongourl does not begin with mongodb://'

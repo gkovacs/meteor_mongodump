@@ -11,7 +11,7 @@ datecmd = 'date'
 if fs.existsSync('/usr/local/bin/gdate')
   datecmd = '/usr/local/bin/gdate'
 
-curdate = exec(datecmd + ' --rfc-3339=seconds').output.split(' ').join('_').trim()
+curdate = exec(datecmd + ' --rfc-3339=seconds').stdout.split(' ').join('_').trim()
 
 herokusite = process.argv[2]
 if not herokusite?
@@ -22,9 +22,9 @@ herokusite = herokusite.split('.herokuapp.com').join('')
 
 dumpdir = [herokusite, curdate].join('_')
 
-mongourl = exec("heroku config:get MONGODB_URI --app #{herokusite}").output.trim()
+mongourl = exec("heroku config:get MONGODB_URI --app #{herokusite}").stdout.trim()
 if mongourl == ''
-  mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").output.trim()
+  mongourl = exec("heroku config:get MONGOLAB_URI --app #{herokusite}").stdout.trim()
 
 console.log 'mongourl: ' + mongourl
 
@@ -38,7 +38,7 @@ listcollections = (uri) ->
   db = login['database']
   user = login['username']
   passwd = login['password']
-  return levn.parse '[String]', exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").output.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
+  return levn.parse '[String]', exec("mongo --username #{user} --password #{passwd} #{host + '/' + db} --eval 'db.getCollectionNames()'").stdout.trim().split('\n').filter((x) -> x.indexOf('MongoDB shell version') == -1 && x.indexOf('connecting to:') == -1).join('\n')
 
 console.log 'collections:'
 all_collections = listcollections(mongourl)
