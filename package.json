@@ -1,14 +1,16 @@
 {
   "name": "mongodump_meteor",
-  "version": "1.0.75",
+  "version": "1.0.76",
   "description": "mongodump and mongorestore wrapper for meteor repositories",
   "main": "bin/mongodump_meteor",
   "dependencies": {
     "async": "^2.0.0-rc.3",
     "glob": "^7.0.3",
+    "global": "^4.3.2",
     "levn": "^0.3.0",
     "mongo-uri": "^0.1.2",
     "mongodb": "^2.1.18",
+    "mongodump_meteor": "^1.0.75",
     "optionator": "^0.8.1",
     "shelljs": "^0.7.8",
     "sysexec": "^1.0.1"
